@@ -16,13 +16,27 @@ class Movie < ActiveRecord::Base
   # if ratings_list is an array such as ['G', 'PG', 'R'], retrieve all
   #  movies with those ratings
   # if ratings_list is nil, retrieve ALL movies
-  def self.with_ratings(ratings_list)
+  def self.with_ratings(ratings_list, header_clicked)
     if ratings_list == nil
+      return Movie.all.order(header_clicked) unless header_clicked == nil
       return Movie.all
     end
     
     keys = ratings_list.keys.map(&:downcase)
-    return Movie.where("lower(rating) IN (?)", keys)
+    if header_clicked == nil
+      return Movie.where("lower(rating) IN (?)", keys)
+    else
+      byebug
+      return Movie.where("lower(rating) IN (?)", keys).order(header_clicked)
+    end
   end
+  
+  def self.header_clicked(header_clicked, movies)
+     if header_clicked == nil
+       return movies
+     end
+     return movies.order(header_clicked)
+  end
+
   
 end
