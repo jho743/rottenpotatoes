@@ -26,7 +26,6 @@ class Movie < ActiveRecord::Base
     if header_clicked == nil
       return Movie.where("lower(rating) IN (?)", keys)
     else
-      byebug
       return Movie.where("lower(rating) IN (?)", keys).order(header_clicked)
     end
   end
