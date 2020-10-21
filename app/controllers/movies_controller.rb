@@ -11,8 +11,17 @@ class MoviesController < ApplicationController
     @all_ratings = Movie.all_ratings
     @header_class = params[:header_clicked]
     @ratings_to_show = Movie.ratings_to_show(params[:ratings])
-    @movies = Movie.with_ratings(params[:ratings], params[:header_clicked])
-    
+#     byebug
+    if @header_class == nil and @ratings_to_show == [] and session[:filters] != nil
+#       byebug
+      if session[:filters][0] != nil
+        @ratings_to_show = session[:filters][0].keys
+      end
+      @header_class = session[:filters][1]
+    end
+#     byebug
+    @movies = Movie.with_ratings(@ratings_to_show, @header_class)
+    session[:filters] = [params[:ratings], params[:header_clicked]]
     
   end
 
